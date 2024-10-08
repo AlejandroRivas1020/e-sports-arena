@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { TournamentsRegistration } from 'src/modules/tournamentsregistration/entities/tournamentsregistration.entity';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('tournaments')
 export class Tournament {
@@ -22,4 +23,10 @@ export class Tournament {
 
   @Column({ type: 'int', name: 'registered_players', default: 0 })
   registeredPlayers: number;
+
+  @OneToMany(
+    () => TournamentsRegistration,
+    (registration) => registration.tournament,
+  )
+  tournamentsRegistration: TournamentsRegistration[];
 }

@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { TournamentsRegistration } from 'src/modules/tournamentsregistration/entities/tournamentsregistration.entity';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('users')
 export class User {
@@ -16,4 +17,7 @@ export class User {
 
   @Column({ type: 'uuid', name: 'role_id' })
   roleId: string;
+
+  @OneToMany(() => TournamentsRegistration, (registration) => registration.user)
+  tournamentsRegistration: TournamentsRegistration[];
 }
