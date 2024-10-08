@@ -2,9 +2,16 @@ import { Controller, Get, Post, Body, Patch, Param } from '@nestjs/common';
 import { ScheduledGamesService } from './scheduled-games.service';
 import { CreateScheduledGameDto } from './dto/create-scheduled-game.dto';
 import { UpdateScheduledGameDto } from './dto/update-scheduled-game.dto';
-import { ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiParam,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 
 @ApiTags('Scheduled Games')
+@ApiBearerAuth()
 @Controller('scheduled-games')
 export class ScheduledGamesController {
   constructor(private readonly scheduledGamesService: ScheduledGamesService) {}

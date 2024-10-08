@@ -1,5 +1,13 @@
+import { Role } from 'src/modules/role/entities/role.entity';
 import { TournamentsRegistration } from 'src/modules/tournamentsregistration/entities/tournamentsregistration.entity';
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity('users')
 export class User {
@@ -20,4 +28,8 @@ export class User {
 
   @OneToMany(() => TournamentsRegistration, (registration) => registration.user)
   tournamentsRegistration: TournamentsRegistration[];
+
+  @ManyToOne(() => Role, (role) => role.users, { eager: true })
+  @JoinColumn({ name: 'role_id' })
+  role: Role;
 }
