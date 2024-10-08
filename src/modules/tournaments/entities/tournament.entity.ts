@@ -1,3 +1,4 @@
+import { ScheduledGame } from 'src/modules/scheduled-games/entities/scheduled-game.entity';
 import { TournamentsRegistration } from 'src/modules/tournamentsregistration/entities/tournamentsregistration.entity';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
@@ -29,4 +30,7 @@ export class Tournament {
     (registration) => registration.tournament,
   )
   tournamentsRegistration: TournamentsRegistration[];
+
+  @OneToMany(() => ScheduledGame, (scheduledGame) => scheduledGame.tournament)
+  scheduledGames: ScheduledGame[];
 }
