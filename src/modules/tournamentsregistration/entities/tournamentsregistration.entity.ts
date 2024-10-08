@@ -1,3 +1,4 @@
+import { ResultGame } from 'src/modules/result-games/entities/result-game.entity';
 import { ScheduledGame } from 'src/modules/scheduled-games/entities/scheduled-game.entity';
 import { Tournament } from 'src/modules/tournaments/entities/tournament.entity';
 import { User } from 'src/modules/users/entities/user.entity';
@@ -43,4 +44,19 @@ export class TournamentsRegistration {
 
   @OneToMany(() => ScheduledGame, (scheduledGame) => scheduledGame.playerB)
   gamesAsPlayerB: ScheduledGame[];
+
+  @OneToMany(() => ResultGame, (resultGame) => resultGame.winner)
+  resultGamesWon: ResultGame[];
+
+  @OneToMany(() => ResultGame, (resultGame) => resultGame.loser)
+  resultGamesLost: ResultGame[];
+
+  @Column({ default: 0 })
+  gamesWon: number;
+
+  @Column({ default: 0 })
+  gamesLost: number;
+
+  @Column({ default: 0 })
+  totalPoints: number;
 }

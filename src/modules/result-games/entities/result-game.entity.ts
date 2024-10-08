@@ -1,5 +1,5 @@
 import { ScheduledGame } from 'src/modules/scheduled-games/entities/scheduled-game.entity';
-import { User } from 'src/modules/users/entities/user.entity';
+import { TournamentsRegistration } from 'src/modules/tournamentsregistration/entities/tournamentsregistration.entity';
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -13,9 +13,13 @@ export class ResultGame {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @ManyToOne(() => ScheduledGame, (scheduledGame) => scheduledGame.id, {
-    eager: true,
-  })
+  @ManyToOne(
+    () => ScheduledGame,
+    (scheduledGame) => scheduledGame.resultGames,
+    {
+      eager: true,
+    },
+  )
   @JoinColumn({ name: 'scheduled_game_id' })
   scheduledGame: ScheduledGame;
 
@@ -25,11 +29,11 @@ export class ResultGame {
   @Column({ type: 'int' })
   scoreTeamB: number;
 
-  @ManyToOne(() => User, { eager: true })
+  @ManyToOne(() => TournamentsRegistration, { eager: true })
   @JoinColumn({ name: 'winner_id' })
-  winner: User;
+  winner: TournamentsRegistration;
 
-  @ManyToOne(() => User, { eager: true })
+  @ManyToOne(() => TournamentsRegistration, { eager: true })
   @JoinColumn({ name: 'loser_id' })
-  loser: User;
+  loser: TournamentsRegistration;
 }
