@@ -1,3 +1,4 @@
+import { ResultGame } from 'src/modules/result-games/entities/result-game.entity';
 import { Tournament } from 'src/modules/tournaments/entities/tournament.entity';
 import { TournamentsRegistration } from 'src/modules/tournamentsregistration/entities/tournamentsregistration.entity';
 import {
@@ -5,6 +6,7 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -33,4 +35,7 @@ export class ScheduledGame {
 
   @Column({ type: 'timestamptz', name: 'game_date' })
   gameDate: Date;
+
+  @OneToOne(() => ResultGame, (resultGame) => resultGame.scheduledGame)
+  resultGames: ResultGame[];
 }
