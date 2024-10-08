@@ -9,7 +9,7 @@ import { ResultGame } from './entities/result-game.entity';
 import { CreateResultGameDto } from './dto/create-result-game.dto';
 import { UpdateResultGameDto } from './dto/update-result-game.dto';
 import { ScheduledGame } from '../scheduled-games/entities/scheduled-game.entity';
-import { User } from '../users/entities/user.entity';
+import { TournamentsRegistration } from '../tournamentsregistration/entities/tournamentsregistration.entity';
 
 @Injectable()
 export class ResultGamesService {
@@ -20,8 +20,8 @@ export class ResultGamesService {
     @InjectRepository(ScheduledGame)
     private readonly scheduledGameRepository: Repository<ScheduledGame>,
 
-    @InjectRepository(User)
-    private readonly userRepository: Repository<User>,
+    @InjectRepository(TournamentsRegistration)
+    private readonly tournamentsRegistrationRepository: Repository<TournamentsRegistration>,
   ) {}
 
   async create(createResultGameDto: CreateResultGameDto): Promise<ResultGame> {
@@ -36,15 +36,19 @@ export class ResultGamesService {
       throw new NotFoundException('Scheduled game not found');
     }
 
-    let winner: User;
-    let loser: User;
+    if (scoreTeamA < 0 || scoreTeamB < 0) {
+      throw new BadRequestException('Scores cannot be negative');
+    }
+
+    let winner: TournamentsRegistration;
+    let loser: TournamentsRegistration;
 
     if (scoreTeamA > scoreTeamB) {
-      winner = scheduledGame.playerA.user;
-      loser = scheduledGame.playerB.user;
+      winner = scheduledGame.playerA;
+      loser = scheduledGame.playerB;
     } else if (scoreTeamB > scoreTeamA) {
-      winner = scheduledGame.playerB.user;
-      loser = scheduledGame.playerA.user;
+      winner = scheduledGame.playerB;
+      loser = scheduledGame.playerA;
     } else {
       throw new BadRequestException('Scores cannot be equal');
     }
@@ -98,15 +102,19 @@ export class ResultGamesService {
 
     const { scoreTeamA, scoreTeamB } = updateResultGameDto;
 
+    if (scoreTeamA < 0 || scoreTeamB < 0) {
+      throw new BadRequestException('Scores cannot be negative');
+    }
+
     resultGame.scoreTeamA = scoreTeamA;
     resultGame.scoreTeamB = scoreTeamB;
 
     if (scoreTeamA > scoreTeamB) {
-      resultGame.winner = resultGame.scheduledGame.playerA.user;
-      resultGame.loser = resultGame.scheduledGame.playerB.user;
+      resultGame.winner = resultGame.scheduledGame.playerA;
+      resultGame.loser = resultGame.scheduledGame.playerB;
     } else if (scoreTeamB > scoreTeamA) {
-      resultGame.winner = resultGame.scheduledGame.playerB.user;
-      resultGame.loser = resultGame.scheduledGame.playerA.user;
+      resultGame.winner = resultGame.scheduledGame.playerB;
+      resultGame.loser = resultGame.scheduledGame.playerA;
     } else {
       throw new BadRequestException('Scores cannot be equal');
     }

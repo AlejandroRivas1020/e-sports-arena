@@ -3,6 +3,7 @@ import { TournamentsregistrationService } from './tournamentsregistration.servic
 import { CreateTournamentsRegistrationDto } from './dto/create-tournamentsregistration.dto';
 import { UpdateTournamentsRegistrationDto } from './dto/update-tournamentsregistration.dto';
 import { ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { TournamentsRegistration } from './entities/tournamentsregistration.entity';
 
 @ApiTags('Tournaments Registration')
 @Controller('tournamentsregistration')
@@ -24,6 +25,23 @@ export class TournamentsregistrationController {
     return this.tournamentsregistrationService.create(
       createTournamentsRegistrationDto,
     );
+  }
+
+  @Post(':tournamentId/calculate-scores')
+  @ApiOperation({ summary: 'Calculate scores for a specific tournament' })
+  @ApiResponse({
+    status: 200,
+    description: 'Scores calculated successfully',
+    type: [TournamentsRegistration],
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'Tournament not found',
+  })
+  async calculateScores(
+    @Param('tournamentId') tournamentId: string,
+  ): Promise<TournamentsRegistration[]> {
+    return this.tournamentsregistrationService.calculateScores(tournamentId);
   }
 
   @Get()

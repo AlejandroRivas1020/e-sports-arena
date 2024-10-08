@@ -37,5 +37,5 @@ export class ScheduledGame {
   gameDate: Date;
 
   @OneToOne(() => ResultGame, (resultGame) => resultGame.scheduledGame)
-  resultGame: ResultGame;
+  resultGames: ResultGame[];
 }

@@ -83,4 +83,38 @@ export class TournamentsregistrationService {
 
     return this.registrationRepository.save(registration);
   }
+
+  async calculateScores(
+    tournamentId: string,
+  ): Promise<TournamentsRegistration[]> {
+    const registrations = await this.registrationRepository.find({
+      where: { tournament: { id: tournamentId } },
+      relations: ['resultGamesWon', 'resultGamesLost'], // Relacionar resultados de juegos ganados y perdidos
+    });
+
+    const results = registrations.map((registration) => {
+      const gamesWon = registration.resultGamesWon.length;
+
+      const gamesLost = registration.resultGamesLost.length;
+
+      const totalPoints = gamesWon * 3;
+
+      return {
+        ...registration,
+        gamesWon,
+        gamesLost,
+        totalPoints,
+      };
+    });
+
+    for (const result of results) {
+      await this.registrationRepository.update(result.id, {
+        gamesWon: result.gamesWon,
+        gamesLost: result.gamesLost,
+        totalPoints: result.totalPoints,
+      });
+    }
+
+    return results;
+  }
 }
