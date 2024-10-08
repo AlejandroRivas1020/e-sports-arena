@@ -1,3 +1,4 @@
+import { ScheduledGame } from 'src/modules/scheduled-games/entities/scheduled-game.entity';
 import { Tournament } from 'src/modules/tournaments/entities/tournament.entity';
 import { User } from 'src/modules/users/entities/user.entity';
 import {
@@ -5,6 +6,7 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -35,4 +37,10 @@ export class TournamentsRegistration {
     default: () => 'CURRENT_TIMESTAMP',
   })
   registrationDate: Date;
+
+  @OneToMany(() => ScheduledGame, (scheduledGame) => scheduledGame.playerA)
+  gamesAsPlayerA: ScheduledGame[];
+
+  @OneToMany(() => ScheduledGame, (scheduledGame) => scheduledGame.playerB)
+  gamesAsPlayerB: ScheduledGame[];
 }
