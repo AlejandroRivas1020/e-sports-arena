@@ -5,6 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ScheduledGame } from './entities/scheduled-game.entity';
 import { TournamentsRegistration } from '../tournamentsregistration/entities/tournamentsregistration.entity';
 import { Tournament } from '../tournaments/entities/tournament.entity';
+import { ResultGame } from '../result-games/entities/result-game.entity';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { Tournament } from '../tournaments/entities/tournament.entity';
       ScheduledGame,
       TournamentsRegistration,
       Tournament,
+      ResultGame,
     ]),
   ],
   controllers: [ScheduledGamesController],
