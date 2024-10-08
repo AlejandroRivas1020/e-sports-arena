@@ -13,8 +13,8 @@ async function bootstrap() {
   app.useGlobalGuards(app.get(JwtAuthGuard));
 
   const swaggerConfig = new DocumentBuilder()
-    .setTitle('Library API')
-    .setDescription('API for managing books')
+    .setTitle('eSports Arena API')
+    .setDescription('API for managing games')
     .setVersion('1.0')
     .addBearerAuth()
     .build();
