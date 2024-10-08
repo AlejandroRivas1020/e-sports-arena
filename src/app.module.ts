@@ -6,6 +6,8 @@ import { TournamentsModule } from './modules/tournaments/tournaments.module';
 import { TournamentsregistrationModule } from './modules/tournamentsregistration/tournamentsregistration.module';
 import { ScheduledGamesModule } from './modules/scheduled-games/scheduled-games.module';
 import { ResultGamesModule } from './modules/result-games/result-games.module';
+import { RoleModule } from './modules/role/role.module';
+import { AuthModule } from './modules/auth/auth.module';
 
 @Module({
   imports: [
@@ -15,6 +17,8 @@ import { ResultGamesModule } from './modules/result-games/result-games.module';
     TournamentsregistrationModule,
     ScheduledGamesModule,
     ResultGamesModule,
+    RoleModule,
+    AuthModule,
   ],
   controllers: [],
   providers: [],
