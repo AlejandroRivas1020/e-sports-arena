@@ -89,7 +89,7 @@ export class TournamentsregistrationService {
   ): Promise<TournamentsRegistration[]> {
     const registrations = await this.registrationRepository.find({
       where: { tournament: { id: tournamentId } },
-      relations: ['resultGamesWon', 'resultGamesLost'], // Relacionar resultados de juegos ganados y perdidos
+      relations: ['resultGamesWon', 'resultGamesLost'],
     });
 
     const results = registrations.map((registration) => {

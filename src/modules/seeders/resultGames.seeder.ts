@@ -1,9 +1,9 @@
-import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
 import { ResultGame } from '../result-games/entities/result-game.entity';
+import { TournamentsRegistration } from '../tournamentsregistration/entities/tournamentsregistration.entity';
+import { Repository } from 'typeorm';
 import { ScheduledGame } from '../scheduled-games/entities/scheduled-game.entity';
-import { TournamentsRegistration } from '../tournamentsregistration/entities/tournamentsregistration.entity'; // Asegúrate de que esta ruta sea correcta
+import { Injectable, Logger } from '@nestjs/common';
 
 @Injectable()
 export class ResultGameSeeder {
@@ -26,16 +26,21 @@ export class ResultGameSeeder {
     });
 
     for (const game of scheduledGames) {
-      const winner = await this.getRandomWinner(game.playerA, game.playerB);
-      const loser = winner === game.playerA ? game.playerB : game.playerA;
+      const { scoreTeamA, scoreTeamB } = this.generateScores();
+
+      let winner, loser;
+      if (scoreTeamA > scoreTeamB) {
+        winner = game.playerA;
+        loser = game.playerB;
+      } else {
+        winner = game.playerB;
+        loser = game.playerA;
+      }
 
       const winnerUser = winner.user;
       const loserUser = loser.user;
 
       if (winnerUser && loserUser) {
-        const scoreTeamA = this.getRandomScore();
-        const scoreTeamB = this.getRandomScore();
-
         const resultGame = this.resultGameRepository.create({
           scheduledGame: game,
           winner,
@@ -57,14 +62,14 @@ export class ResultGameSeeder {
     }
   }
 
-  private async getRandomWinner(
-    playerA: TournamentsRegistration,
-    playerB: TournamentsRegistration,
-  ) {
-    return Math.random() < 0.5 ? playerA : playerB;
-  }
+  private generateScores() {
+    const scoreTeamA = Math.floor(Math.random() * 10);
+    let scoreTeamB = Math.floor(Math.random() * 10);
 
-  private getRandomScore() {
-    return Math.floor(Math.random() * 10);
+    while (scoreTeamA === scoreTeamB) {
+      scoreTeamB = Math.floor(Math.random() * 10);
+    }
+
+    return { scoreTeamA, scoreTeamB };
   }
 }

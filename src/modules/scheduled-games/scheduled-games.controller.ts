@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  NotFoundException,
+} from '@nestjs/common';
 import { ScheduledGamesService } from './scheduled-games.service';
 import { CreateScheduledGameDto } from './dto/create-scheduled-game.dto';
 import { UpdateScheduledGameDto } from './dto/update-scheduled-game.dto';
@@ -9,6 +17,7 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
+import { ScheduledGame } from './entities/scheduled-game.entity';
 
 @ApiTags('Scheduled Games')
 @ApiBearerAuth()
@@ -43,7 +52,7 @@ export class ScheduledGamesController {
   @ApiResponse({
     status: 200,
     description: 'Scheduled game retrieved successfully.',
-  }) // Respuesta esperada
+  })
   @ApiResponse({ status: 404, description: 'Scheduled game not found.' })
   @ApiParam({ name: 'id', description: 'ID of the scheduled game to retrieve' })
   findOne(@Param('id') id: string) {
@@ -63,5 +72,38 @@ export class ScheduledGamesController {
     @Body() updateScheduledGameDto: UpdateScheduledGameDto,
   ) {
     return this.scheduledGamesService.update(id, updateScheduledGameDto);
+  }
+
+  @Post('generate/:tournamentId')
+  @ApiOperation({ summary: 'Generate scheduled games for a tournament' })
+  @ApiResponse({
+    status: 201,
+    description: 'Games generated successfully',
+    type: [ScheduledGame],
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'No games were generated for this tournament.',
+  })
+  @ApiParam({
+    name: 'tournamentId',
+    required: true,
+    description: 'ID of the tournament for which to generate games',
+  })
+  async generateScheduledGames(
+    @Param('tournamentId') tournamentId: string,
+  ): Promise<ScheduledGame[]> {
+    const scheduledGames =
+      await this.scheduledGamesService.generateScheduledGamesForTournament(
+        tournamentId,
+      );
+
+    if (!scheduledGames.length) {
+      throw new NotFoundException(
+        'No games were generated for this tournament.',
+      );
+    }
+
+    return scheduledGames;
   }
 }
