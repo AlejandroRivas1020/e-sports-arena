@@ -52,7 +52,7 @@ export class TournamentsregistrationController {
   }
 
   @Get()
-  @ApiOperation({ summary: 'Retrieve all tournament registrations' }) // Description of the operation
+  @ApiOperation({ summary: 'Retrieve all tournament registrations' })
   @ApiResponse({
     status: 200,
     description: 'List of all registrations.',
@@ -80,7 +80,7 @@ export class TournamentsregistrationController {
   }
 
   @Patch(':id')
-  @ApiOperation({ summary: 'Update a tournament registration by ID' }) // Description of the operation
+  @ApiOperation({ summary: 'Update a tournament registration by ID' })
   @ApiParam({
     name: 'id',
     description: 'The ID of the tournament registration to update',
