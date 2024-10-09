@@ -2,10 +2,17 @@ import { Controller, Get, Post, Body, Patch, Param } from '@nestjs/common';
 import { TournamentsregistrationService } from './tournamentsregistration.service';
 import { CreateTournamentsRegistrationDto } from './dto/create-tournamentsregistration.dto';
 import { UpdateTournamentsRegistrationDto } from './dto/update-tournamentsregistration.dto';
-import { ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiParam,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { TournamentsRegistration } from './entities/tournamentsregistration.entity';
 
 @ApiTags('Tournaments Registration')
+@ApiBearerAuth()
 @Controller('tournamentsregistration')
 export class TournamentsregistrationController {
   constructor(

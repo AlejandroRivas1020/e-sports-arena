@@ -13,6 +13,7 @@ import {
   ApiResponse,
   ApiQuery,
   ApiParam,
+  ApiBearerAuth,
 } from '@nestjs/swagger';
 import { ResultGamesService } from './result-games.service';
 import { CreateResultGameDto } from './dto/create-result-game.dto';
@@ -20,6 +21,7 @@ import { UpdateResultGameDto } from './dto/update-result-game.dto';
 import { ResultGame } from './entities/result-game.entity';
 
 @ApiTags('Result Games')
+@ApiBearerAuth()
 @Controller('result-games')
 export class ResultGamesController {
   constructor(private readonly resultGamesService: ResultGamesService) {}
