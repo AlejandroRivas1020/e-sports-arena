@@ -120,4 +120,58 @@ export class ScheduledGamesService {
 
     return await this.scheduledGameRepository.save(scheduledGame);
   }
+
+  async generateScheduledGamesForTournament(
+    tournamentId: string,
+  ): Promise<ScheduledGame[]> {
+    const tournament = await this.tournamentRepository.findOne({
+      where: { id: tournamentId },
+      relations: ['tournamentsRegistration'],
+    });
+    if (!tournament) {
+      throw new NotFoundException(
+        `Tournament with ID ${tournamentId} not found`,
+      );
+    }
+
+    const registrations = tournament.tournamentsRegistration;
+    if (registrations.length < 2) {
+      throw new NotFoundException(
+        'Not enough players registered for the tournament',
+      );
+    }
+
+    const scheduledGames: ScheduledGame[] = [];
+    for (let i = 0; i < registrations.length; i++) {
+      for (let j = i + 1; j < registrations.length; j++) {
+        const playerA = registrations[i];
+        const playerB = registrations[j];
+
+        const gameDate = await this.generateRandomDate(
+          tournament.startDate,
+          tournament.endDate,
+        );
+
+        const scheduledGame = this.scheduledGameRepository.create({
+          tournament,
+          playerA,
+          playerB,
+          gameDate,
+        });
+
+        scheduledGames.push(
+          await this.scheduledGameRepository.save(scheduledGame),
+        );
+      }
+    }
+
+    return scheduledGames;
+  }
+
+  private generateRandomDate(startDate: Date, endDate: Date): Date {
+    const start = startDate.getTime();
+    const end = endDate.getTime();
+    const randomTime = start + Math.random() * (end - start);
+    return new Date(randomTime);
+  }
 }
