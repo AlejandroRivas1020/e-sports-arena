@@ -45,10 +45,10 @@ export class AuthService {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const role = await this.roleRepository.findOne({
-      where: { name: 'user' },
+      where: { name: 'player' },
     });
     if (!role) {
-      throw new Error('Role "user" not found');
+      throw new Error('Role "player" not found');
     }
 
     const newUser = this.userRepository.create({

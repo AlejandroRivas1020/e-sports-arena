@@ -73,7 +73,7 @@ export class ResultGamesService {
       .leftJoinAndSelect('resultGame.loser', 'loser');
 
     if (tournamentId) {
-      query.where('scheduledGame.tournamentId = :tournamentId', {
+      query.where('tournament.id = :tournamentId', {
         tournamentId,
       });
     }
