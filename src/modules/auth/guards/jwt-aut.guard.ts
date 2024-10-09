@@ -4,19 +4,24 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { JwtService } from '@nestjs/jwt';
-import { Reflector } from '@nestjs/core';
 
 @Injectable()
 export class JwtAuthGuard extends AuthGuard('jwt') {
-  constructor(
-    private reflector: Reflector,
-    private jwtService: JwtService,
-  ) {
+  constructor() {
     super();
   }
 
   canActivate(context: ExecutionContext) {
+    const request = context.switchToHttp().getRequest();
+
+    const isAuthRoute =
+      request.url.startsWith('/api/auth/register') ||
+      request.url.startsWith('/api/auth/login');
+
+    if (isAuthRoute) {
+      return true;
+    }
+
     return super.canActivate(context);
   }
 
