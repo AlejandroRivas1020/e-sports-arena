@@ -8,6 +8,7 @@ import { ScheduledGamesModule } from './modules/scheduled-games/scheduled-games.
 import { ResultGamesModule } from './modules/result-games/result-games.module';
 import { RoleModule } from './modules/role/role.module';
 import { AuthModule } from './modules/auth/auth.module';
+import { SeedersModule } from './modules/seeders/seeders.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { AuthModule } from './modules/auth/auth.module';
     ResultGamesModule,
     AuthModule,
     RoleModule,
+    SeedersModule,
   ],
   controllers: [],
   providers: [],

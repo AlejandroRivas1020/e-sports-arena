@@ -6,7 +6,7 @@ export class Role {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ type: 'varchar', length: 50 })
+  @Column({ type: 'varchar', unique: true, length: 50 })
   name: string;
 
   @OneToMany(() => User, (user) => user.role)
